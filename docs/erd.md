@@ -14,68 +14,68 @@ erDiagram
  
     USER {
         bigint id PK
-        varchar email UK
-        varchar password
-        varchar nickname
-        varchar role "INDIVIDUAL, STORE"
-        varchar phone
-        varchar profile_image_url
-        datetime created_at
+        varchar email UK "not null"
+        varchar password "not null"
+        varchar nickname "not null"
+        varchar role "not null, INDIVIDUAL/STORE"
+        varchar phone "nullable"
+        varchar profile_image_url "nullable"
+        datetime created_at "not null"
     }
  
     STORE_PROFILE {
         bigint id PK
-        bigint user_id FK "UK, User와 1:1"
-        varchar store_name
-        varchar address
+        bigint user_id FK "UK, not null, User와 1:1"
+        varchar store_name "not null"
+        varchar address "not null"
         varchar business_registration_number "nullable"
-        varchar verification_status "NONE, PENDING, APPROVED, REJECTED"
+        varchar verification_status "not null, NONE/PENDING/APPROVED/REJECTED"
         datetime verified_at "nullable"
     }
  
     PRODUCT {
         bigint id PK
-        bigint seller_id FK
-        varchar title
-        int price
-        text description
-        varchar category
-        varchar status "ON_SALE, RESERVED, SOLD"
-        datetime created_at
+        bigint seller_id FK "not null"
+        varchar title "not null"
+        int price "not null"
+        text description "nullable"
+        varchar category "nullable"
+        varchar status "not null, ON_SALE/RESERVED/SOLD"
+        datetime created_at "not null"
     }
  
     PRODUCT_IMAGE {
         bigint id PK
-        bigint product_id FK
-        varchar image_url
-        int sort_order
+        bigint product_id FK "not null"
+        varchar image_url "not null"
+        int sort_order "not null"
     }
  
     ORDER {
         bigint id PK
-        bigint product_id FK
-        bigint buyer_id FK
-        bigint seller_id FK "조회 편의용 비정규화"
-        varchar order_type "DIRECT, PAYMENT"
-        varchar status "REQUESTED, ACCEPTED, PAID, COMPLETED, CANCELED"
-        datetime created_at
+        bigint product_id FK "not null"
+        bigint buyer_id FK "not null"
+        bigint seller_id FK "not null, 조회 편의용 비정규화"
+        varchar order_type "not null, DIRECT/PAYMENT"
+        varchar status "not null, REQUESTED/ACCEPTED/PAID/COMPLETED/CANCELED"
+        datetime created_at "not null"
     }
  
     PAYMENT {
         bigint id PK
-        bigint order_id FK "UK, Order와 1:1"
-        int amount
-        varchar method
+        bigint order_id FK "UK, not null, Order와 1:1"
+        int amount "not null"
+        varchar method "not null"
         varchar pg_transaction_id "nullable"
-        varchar status "PENDING, DONE, FAILED, CANCELED"
+        varchar status "not null, PENDING/DONE/FAILED/CANCELED"
         datetime paid_at "nullable"
     }
  
     DELIVERY {
         bigint id PK
-        bigint order_id FK "UK, Order와 1:1"
-        varchar address
-        varchar status "READY, SHIPPED, DELIVERED"
+        bigint order_id FK "UK, not null, Order와 1:1"
+        varchar address "not null"
+        varchar status "not null, READY/SHIPPED/DELIVERED"
         varchar tracking_number "nullable"
         varchar courier "nullable"
         datetime shipped_at "nullable"
@@ -84,18 +84,18 @@ erDiagram
  
     CHAT_ROOM {
         bigint id PK
-        bigint product_id FK
-        bigint buyer_id FK
-        bigint seller_id FK
-        datetime created_at
+        bigint product_id FK "not null"
+        bigint buyer_id FK "not null"
+        bigint seller_id FK "not null"
+        datetime created_at "not null"
     }
  
     CHAT_MESSAGE {
         bigint id PK
-        bigint chat_room_id FK
-        bigint sender_id FK
-        text content
-        datetime sent_at
+        bigint chat_room_id FK "not null"
+        bigint sender_id FK "not null"
+        text content "not null"
+        datetime sent_at "not null"
     }
 ```
 
