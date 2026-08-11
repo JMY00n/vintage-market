@@ -24,6 +24,5 @@ public class SignUpRequest {
     @NotBlank
     private String role;
 
-    @NotBlank
     private String phone;
 }
