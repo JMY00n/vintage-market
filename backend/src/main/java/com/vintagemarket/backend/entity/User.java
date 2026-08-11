@@ -29,15 +29,15 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role; // INDIVIDUAL, STORE
+    private Role role; // INDIVIDUAL, STORE
 
     private String phone;
 
-    private String profile_image_url;
+    private String profileImageUrl;
 
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     public enum Role {
         INDIVIDUAL, STORE
