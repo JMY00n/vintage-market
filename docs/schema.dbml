@@ -1,0 +1,98 @@
+CREATE TABLE `user` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `email` varchar(255) UNIQUE,
+  `password` varchar(255),
+  `nickname` varchar(255),
+  `role` varchar(255) COMMENT 'INDIVIDUAL, STORE',
+  `phone` varchar(255),
+  `profile_image_url` varchar(255),
+  `created_at` datetime
+);
+
+CREATE TABLE `store_profile` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `user_id` bigint UNIQUE,
+  `store_name` varchar(255),
+  `address` varchar(255),
+  `business_registration_number` varchar(255) COMMENT 'nullable',
+  `verification_status` varchar(255) COMMENT 'NONE, PENDING, APPROVED, REJECTED',
+  `verified_at` datetime COMMENT 'nullable'
+);
+
+CREATE TABLE `product` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `seller_id` bigint,
+  `title` varchar(255),
+  `price` int,
+  `description` text,
+  `category` varchar(255),
+  `status` varchar(255) COMMENT 'ON_SALE, RESERVED, SOLD',
+  `created_at` datetime
+);
+
+CREATE TABLE `product_image` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `product_id` bigint,
+  `image_url` varchar(255),
+  `sort_order` int
+);
+
+CREATE TABLE `order` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `product_id` bigint,
+  `buyer_id` bigint,
+  `seller_id` bigint COMMENT '조회 편의용 비정규화',
+  `order_type` varchar(255) COMMENT 'DIRECT, PAYMENT',
+  `status` varchar(255) COMMENT 'REQUESTED, ACCEPTED, PAID, COMPLETED, CANCELED',
+  `created_at` datetime
+);
+
+CREATE TABLE `payment` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `order_id` bigint UNIQUE,
+  `amount` int,
+  `method` varchar(255),
+  `pg_transaction_id` varchar(255) COMMENT 'nullable',
+  `status` varchar(255) COMMENT 'PENDING, DONE, FAILED, CANCELED',
+  `paid_at` datetime COMMENT 'nullable'
+);
+
+CREATE TABLE `chat_room` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `product_id` bigint,
+  `buyer_id` bigint,
+  `seller_id` bigint,
+  `created_at` datetime
+);
+
+CREATE TABLE `chat_message` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `chat_room_id` bigint,
+  `sender_id` bigint,
+  `content` text,
+  `sent_at` datetime
+);
+
+ALTER TABLE `store_profile` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+ALTER TABLE `product` ADD FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`);
+
+ALTER TABLE `product_image` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+ALTER TABLE `order` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+ALTER TABLE `order` ADD FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`);
+
+ALTER TABLE `order` ADD FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`);
+
+ALTER TABLE `payment` ADD FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
+
+ALTER TABLE `chat_room` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+ALTER TABLE `chat_room` ADD FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`);
+
+ALTER TABLE `chat_room` ADD FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`);
+
+ALTER TABLE `chat_message` ADD FOREIGN KEY (`chat_room_id`) REFERENCES `chat_room` (`id`);
+
+ALTER TABLE `chat_message` ADD FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`);
