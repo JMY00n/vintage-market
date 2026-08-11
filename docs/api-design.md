@@ -51,6 +51,7 @@ MVP 범위 기준. 인증은 세션 또는 JWT 둘 다 가능하나 아래는 �
 ### 상태 전이 흐름
 - DIRECT: `REQUESTED → ACCEPTED → COMPLETED` (또는 `CANCELED`)
 - PAYMENT: `REQUESTED → ACCEPTED → PAID → COMPLETED` (또는 `CANCELED`)
+  - Order.status는 거래 전체의 큰 흐름만 담당. PAID 이후 배송 진행 상황은 Delivery.status가 별도로 추적.
 
 ## 6. Payment
 
@@ -60,7 +61,17 @@ MVP 범위 기준. 인증은 세션 또는 JWT 둘 다 가능하나 아래는 �
 | GET | /api/orders/{id}/payment | 결제 상세 조회 |
 | POST | /api/payments/webhook | PG사 콜백 수신 (추후 실제 PG 연동 시 구현) |
 
-## 7. Chat
+## 7. Delivery
+
+| Method | URI | 설명 |
+|---|---|---|
+| POST | /api/orders/{id}/delivery | 배송 정보 생성 (결제 완료(PAID) 시점에 주소 등록) |
+| GET | /api/orders/{id}/delivery | 배송 상태 조회 |
+| PATCH | /api/orders/{id}/delivery | 배송 상태 갱신 (판매자가 운송장 번호 입력 → status=SHIPPED, 구매자가 수령 확인 → status=DELIVERED) |
+
+> DIRECT 타입 주문은 이 API 대상이 아님 (배송 자체가 없음). 실제 택배사 API 연동은 MVP 범위 밖 — 운송장 번호는 판매자가 수동 입력.
+
+## 8. Chat
 
 | Method | URI | 설명 |
 |---|---|---|
@@ -75,7 +86,11 @@ MVP 범위 기준. 인증은 세션 또는 JWT 둘 다 가능하나 아래는 �
 - 나머지는 모두 로그인 필요.
 - 에러 응답은 spring-board 프로젝트에서 정리했던 401/403 구분 원칙 그대로 적용 (미인증=401, 권한없음=403).
 
+## 공통 원칙: sender/buyer/seller 역할 판단
+User 테이블 자체에는 "이 계정은 항상 판매자"같은 고정 역할이 없다. 같은 계정이 어떤 거래에선 판매자, 다른 거래에선 구매자가 될 수 있기 때문. 그래서 역할은 항상 해당 리소스(Order, ChatRoom) 안의 buyer_id/seller_id를 기준으로 판단한다 — User 테이블만 봐서는 알 수 없음.
+
 ## 향후 확장 후보
 - 채팅 실시간 처리 (WebSocket/STOMP)
 - 관리자 상점 인증 승인 API
 - 리뷰/평점 API
+- 택배사 API 연동을 통한 실시간 배송 조회

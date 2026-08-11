@@ -1,4 +1,103 @@
-<img width="1894" height="861" alt="Untitled" src="https://github.com/user-attachments/assets/9e5fc043-7996-4786-87fe-0a44eedce93b" />
+```mermaid
+erDiagram
+    USER ||--o| STORE_PROFILE : "role=STORE인 경우"
+    USER ||--o{ PRODUCT : "판매자(seller)"
+    USER ||--o{ ORDER : "구매자(buyer)"
+    PRODUCT ||--o{ PRODUCT_IMAGE : "포함"
+    PRODUCT ||--o{ ORDER : "거래 대상"
+    ORDER ||--o| PAYMENT : "PAYMENT 타입인 경우"
+    ORDER ||--o| DELIVERY : "PAYMENT 타입인 경우"
+    PRODUCT ||--o{ CHAT_ROOM : "문의/협의"
+    USER ||--o{ CHAT_ROOM : "buyer/seller로 참여"
+    CHAT_ROOM ||--o{ CHAT_MESSAGE : "포함"
+    USER ||--o{ CHAT_MESSAGE : "발신"
+ 
+    USER {
+        bigint id PK
+        varchar email UK
+        varchar password
+        varchar nickname
+        varchar role "INDIVIDUAL, STORE"
+        varchar phone
+        varchar profile_image_url
+        datetime created_at
+    }
+ 
+    STORE_PROFILE {
+        bigint id PK
+        bigint user_id FK "UK, User와 1:1"
+        varchar store_name
+        varchar address
+        varchar business_registration_number "nullable"
+        varchar verification_status "NONE, PENDING, APPROVED, REJECTED"
+        datetime verified_at "nullable"
+    }
+ 
+    PRODUCT {
+        bigint id PK
+        bigint seller_id FK
+        varchar title
+        int price
+        text description
+        varchar category
+        varchar status "ON_SALE, RESERVED, SOLD"
+        datetime created_at
+    }
+ 
+    PRODUCT_IMAGE {
+        bigint id PK
+        bigint product_id FK
+        varchar image_url
+        int sort_order
+    }
+ 
+    ORDER {
+        bigint id PK
+        bigint product_id FK
+        bigint buyer_id FK
+        bigint seller_id FK "조회 편의용 비정규화"
+        varchar order_type "DIRECT, PAYMENT"
+        varchar status "REQUESTED, ACCEPTED, PAID, COMPLETED, CANCELED"
+        datetime created_at
+    }
+ 
+    PAYMENT {
+        bigint id PK
+        bigint order_id FK "UK, Order와 1:1"
+        int amount
+        varchar method
+        varchar pg_transaction_id "nullable"
+        varchar status "PENDING, DONE, FAILED, CANCELED"
+        datetime paid_at "nullable"
+    }
+ 
+    DELIVERY {
+        bigint id PK
+        bigint order_id FK "UK, Order와 1:1"
+        varchar address
+        varchar status "READY, SHIPPED, DELIVERED"
+        varchar tracking_number "nullable"
+        varchar courier "nullable"
+        datetime shipped_at "nullable"
+        datetime delivered_at "nullable"
+    }
+ 
+    CHAT_ROOM {
+        bigint id PK
+        bigint product_id FK
+        bigint buyer_id FK
+        bigint seller_id FK
+        datetime created_at
+    }
+ 
+    CHAT_MESSAGE {
+        bigint id PK
+        bigint chat_room_id FK
+        bigint sender_id FK
+        text content
+        datetime sent_at
+    }
+```
 
 <hr />
 
@@ -29,6 +128,11 @@
 * `order_type` : 직거래(DIRECT)인지 결제(PAYMENT)인지
 * `status` : 거래 진행 단계
 * `seller_id` : Product 안 거치고 바로 조회하려고 넣어둔 편의용 컬럼
+
+**Delivery**
+* `order_type = PAYMENT`인 Order에만 연결됨 (DIRECT는 배송 개념이 없어서 레코드 자체가 안 생김)
+* `status` : READY(배송준비) -> SHIPPED(발송, 이 시점에 tracking_number 입력) -> DELIVERED(수령확인)    
+* 실제 택배사 API 연동은 MVP 범위가 아니라 이 프로젝트에서는 운송장 번호를 수동으로 입력하는 수준
 
 **Payment(결제)**
 결제 관련 상세 정보는 Order랑 성격이 달라서 따로 뺌. `order_type=PAYMENT`인 주문만 이 테이블에 값이 생김.
