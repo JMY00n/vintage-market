@@ -1,0 +1,21 @@
+@import url('https://cdn.jsdelivr.net/gfont/pretendard/pretendard.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+}
+
+:root {
+  --border-color: #e5e5e5;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-accent: #1a73e8;
+
+  --button-bg: #1a1a1a;
+  --button-text: #ffffff;
+
+  --radius: 8px;
+  --radius-card: 12px;
+}

@@ -1,0 +1,112 @@
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.auth-wrapper {
+    width: 100%;
+    max-width: 360px;
+    padding: 32px 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.auth-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-header--left {
+    width: 300px;
+    align-items: flex-start;
+}
+
+.auth-header h3{
+    margin: 0 0 4px 0;
+    font-size: 24px;
+}
+
+.auth-header p {
+    font-size: 14px;
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.auth-input {
+    width: 300px;
+}
+
+.auth-input p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0 0 4px 0;
+}
+
+.auth-input input {
+    margin-bottom: 10px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 5px;
+}
+
+.auth-button {
+    width: 300px;
+}
+
+.auth-button button {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius);
+    background-color: var(--button-bg);
+    color: var(--button-text);
+}
+
+.auth-etc {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.auth-etc p {
+    color: var(--text-secondary);
+    margin: 0px 10px 0 0;
+    font-size: 12px;
+}
+
+.auth-etc span {
+    color: var(--text-accent);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.auth-role {
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.auth-role label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+}
+
+h3, h4 {
+    font-weight: 500;
+}
