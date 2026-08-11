@@ -1,0 +1,4 @@
+package com.vintagemarket.backend.config;
+
+public class WebConfig {
+}
