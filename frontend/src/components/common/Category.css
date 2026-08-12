@@ -1,0 +1,29 @@
+.category-wrapper {
+    width: 100%;
+    height: 70px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+}
+
+.category-button {
+    display: flex;
+    gap: 16px;
+}
+
+.category-button button {
+    padding: 6px 12px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: white;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.category-button button.active {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border-color: var(--button-bg);
+}

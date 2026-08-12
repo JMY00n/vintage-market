@@ -1,0 +1,16 @@
+.bottom-wrapper {
+    display: flex;
+    height: 50px;
+    border-top: 1px solid var(--border-color);
+    padding: 6px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.nav-icon {
+    cursor: pointer;
+}
+
+.nav-icon:hover {
+    color: var(--text-primary);
+}

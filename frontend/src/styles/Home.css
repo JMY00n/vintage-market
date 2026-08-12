@@ -11,4 +11,16 @@
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
+    flex-direction: column;
+    display: flex;
+    overflow: hidden;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex: 1;
+    overflow-y: auto;
+    gap: 16px;
+    padding: 16px;
 }
