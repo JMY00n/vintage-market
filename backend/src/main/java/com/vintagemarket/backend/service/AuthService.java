@@ -1,5 +1,7 @@
 package com.vintagemarket.backend.service;
 
+import com.vintagemarket.backend.dto.LoginRequest;
+import com.vintagemarket.backend.dto.LoginResponse;
 import com.vintagemarket.backend.dto.SignUpRequest;
 import com.vintagemarket.backend.dto.SignUpResponse;
 import com.vintagemarket.backend.entity.User;
@@ -30,5 +32,16 @@ public class AuthService {
         User saved = authRepository.save(user);
 
         return new SignUpResponse(saved.getId(), saved.getEmail(), saved.getNickname());
+    }
+
+    public LoginResponse login(LoginRequest request) {
+        User user = authRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return new LoginResponse(user.getId(), user.getEmail(), user.getNickname());
     }
 }

@@ -110,7 +110,7 @@ function SignUp() {
               <p>휴대폰 번호</p>
               <input
                 type="text"
-                placeholder="010-1234-5678"
+                placeholder="(-) 하이픈 없이 입력해주세요."
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
