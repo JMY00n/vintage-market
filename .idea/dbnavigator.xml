@@ -6,16 +6,16 @@
   </component>
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
-      <assistant-state connection-id="d1ccdf4b-7554-4093-82ae-4030b94a0de7" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
+      <assistant-state connection-id="d1ccdf4b-7554-4093-82ae-4030b94a0de7" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
         <tools />
         <mcp-servers />
       </assistant-state>
-      <assistant-state connection-id="d1ccdf4b-7554-4093-82ae-4030b94a0de7" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
+      <assistant-state connection-id="d1ccdf4b-7554-4093-82ae-4030b94a0de7" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
         <tools />
         <mcp-servers />
       </assistant-state>
@@ -40,9 +40,7 @@ FROM users;]]></console>
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="d1ccdf4b-7554-4093-82ae-4030b94a0de7" object-ref="consoles/Connection" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabasePrerequisiteManager">
     <prerequisites />
@@ -58,7 +56,11 @@ FROM users;]]></console>
     <filters />
   </component>
   <component name="DBNavigator.Project.Settings">
-    <states />
+    <states>
+      <state category="SECRET_STORAGE_MIGRATION">
+        <migrated value="true" />
+      </state>
+    </states>
     <connections>
       <connection source-id="" id="d1ccdf4b-7554-4093-82ae-4030b94a0de7" active="true" signed="true">
         <database>
