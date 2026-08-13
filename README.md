@@ -44,14 +44,21 @@ vintage-market
 - [ ] 배포
 
 ## UI
-
-#### 로그인
-<img width="2122" height="1534" alt="localhost_5173_login" src="https://github.com/user-attachments/assets/ba914fdf-9173-4464-a53d-1dc3cb8dc1fa" />
-
-#### 회원가입
-<img width="2122" height="1534" alt="localhost_5173_login (1)" src="https://github.com/user-attachments/assets/bb0197b9-f61b-46e8-93cf-8ba7f422185b" />
+ 
+<table>
+  <tr>
+    <td align="center"><b>로그인</b></td>
+    <td align="center"><b>회원가입</b></td>
+  </tr>
+  <tr>
+    <td><img width="300" alt="로그인" src="https://github.com/user-attachments/assets/c7e44db2-6074-45f3-a5ee-30fd332ed6dd" /></td>
+    <td><img width="300" alt="회원가입" src="https://github.com/user-attachments/assets/a4665179-fd21-4da9-a4ad-83651d15e916" /></td>
+  </tr>
+</table>
 
 #### 메인페이지
-<img width="2122" height="1534" alt="localhost_5173_" src="https://github.com/user-attachments/assets/880b8425-8db7-493e-9520-ee0c837850e8" />
-상품 목록은 더미데이터로 출력 중입니다.
+ 
+<img width="500" alt="메인페이지" src="https://github.com/user-attachments/assets/613659d0-b2da-490f-bfd0-32fbdd013719" />
+
+> 상품 목록은 현재 더미데이터로 출력 중입니다.
 
