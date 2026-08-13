@@ -1,0 +1,7 @@
+.product-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    background-color: var(--border-color);
+}

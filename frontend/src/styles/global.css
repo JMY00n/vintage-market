@@ -8,6 +8,7 @@
 }
 
 :root {
+  /* 기존 변수들 그대로 유지 */
   --border-color: #e5e5e5;
   --text-primary: #1a1a1a;
   --text-secondary: #666666;
@@ -21,4 +22,20 @@
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  --bg-success: #e6f4ea;
+  --text-success: #1e7e34;
+  --border-success: #a8d5b5;
+
+  --bg-warning: #fff4e5;
+  --text-warning: #b46a00;
+  --border-warning: #f0c78a;
+
+  --bg-danger: #fdecea;
+  --text-danger: #c53030;
+  --border-danger: #f0aaa4;
+
+  --bg-neutral: #f1f1f1;
+  --text-neutral: #666666;
+  --border-neutral: #d9d9d9;
 }

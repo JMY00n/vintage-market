@@ -19,6 +19,19 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final AuthRepository authRepository;
 
+    private ProductResponse toResponse(Product product) {
+        return new ProductResponse(
+                product.getId(),
+                product.getSeller().getNickname(),
+                product.getSeller().getRole() == User.Role.STORE,
+                product.getTitle(),
+                product.getPrice(),
+                product.getDescription(),
+                product.getCategory(),
+                product.getStatus().name()
+        );
+    }
+
     public ProductResponse create(ProductRequest request) {
         User seller = authRepository.findById(request.getSellerId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 판매자입니다."));
@@ -34,29 +47,20 @@ public class ProductService {
 
         Product saved = productRepository.save(product);
 
-        return new ProductResponse(
-                saved.getId(),
-                saved.getSeller().getNickname(),
-                saved.getSeller().getRole() == User.Role.STORE,
-                saved.getTitle(),
-                saved.getPrice(),
-                saved.getDescription(),
-                saved.getCategory(),
-                saved.getStatus().name()
-        );
+        return toResponse(saved);
     }
 
     public List<ProductResponse> getAll() {
         return productRepository.findAll().stream()
-                .map(product -> new ProductResponse(
-                        product.getId(),
-                        product.getSeller().getNickname(),
-                        product.getSeller().getRole() == User.Role.STORE,
-                        product.getTitle(),
-                        product.getPrice(),
-                        product.getDescription(),
-                        product.getCategory(),
-                        product.getStatus().name()
-                )).toList();
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public ProductResponse getOne(long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+        return toResponse(product);
+
+
     }
 }

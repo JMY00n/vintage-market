@@ -29,4 +29,9 @@ public class ProductController {
         List<ProductResponse> products = service.getAll();
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getOne(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getOne(id));
+    }
 }

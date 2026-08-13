@@ -8,7 +8,7 @@ function BottomNav() {
         <div className="bottom-wrapper">
             <Home size={25} className="nav-icon" />
             <MessageCircle size={25} className="nav-icon" />
-            <Plus size={25} className="nav-icon" />
+            <Plus size={25} className="nav-icon" onClick={() => navigate("/products/form")} />
             <User size={25} className="nav-icon" />
         </div>
     )
