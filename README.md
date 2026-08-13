@@ -12,8 +12,8 @@
 - MySQL
 
 **Frontend**
-- React (Vite)
-- JavaScript (TypeScript / Tailwind 미사용)
+- React (Vite 기반)
+- JavaScript
 
 ## 프로젝트 구조
 
