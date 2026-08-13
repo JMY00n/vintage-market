@@ -45,4 +45,13 @@ vintage-market
 
 ## UI
 
-> 아직 정리 중입니다. 추후 실행 스크립트 및 환경변수 설정 방법을 추가할 예정입니다.
+#### 로그인
+<img width="2122" height="1534" alt="localhost_5173_login" src="https://github.com/user-attachments/assets/ba914fdf-9173-4464-a53d-1dc3cb8dc1fa" />
+
+#### 회원가입
+<img width="2122" height="1534" alt="localhost_5173_login (1)" src="https://github.com/user-attachments/assets/bb0197b9-f61b-46e8-93cf-8ba7f422185b" />
+
+#### 메인페이지
+<img width="2122" height="1534" alt="localhost_5173_" src="https://github.com/user-attachments/assets/880b8425-8db7-493e-9520-ee0c837850e8" />
+상품 목록은 더미데이터로 출력 중입니다.
+
