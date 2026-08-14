@@ -10,7 +10,7 @@ export default function ProductCard({ product }) {
             <div className="product-card-image">
                 {product.imageUrls && product.imageUrls.length > 0 ? (
                     <img 
-                        src={`http://localhost:8080${product.imageUrls[0]}`} 
+                        src={`http://localhost:8080${product.imageUrls[0]}`}
                         alt={product.title}
                     />
                 ) : null}
