@@ -1,15 +1,23 @@
 .form-page {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
 
-.productForm-header p {
+
+.productForm-header button {
     color: var(--text-accent);
+    border: none;
+    background-color: transparent;
 }
 
-.productForm-header p, svg {
+.productForm-header h3 {
+    font-size: 16px;
+}
+
+.productForm-header button, svg {
     cursor: pointer;
 }
 

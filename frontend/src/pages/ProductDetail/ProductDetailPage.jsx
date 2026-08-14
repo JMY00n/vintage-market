@@ -33,7 +33,7 @@ function ProductDetailPage() {
           <h4>{product.price.toLocaleString()}원</h4>
         </div>
         <div className="detail-category">
-          <button className="detail-category-btn">아우터</button>
+          <button className="detail-category-btn">{product.category}</button>
           <button className="detail-sale-btn">판매중</button>
         </div>
         <div className="detail-desc">
