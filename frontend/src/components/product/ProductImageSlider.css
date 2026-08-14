@@ -1,7 +1,17 @@
 .product-image {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     height: 300px;
     background-color: var(--border-color);
+    padding: 0 4px 0 10px;
+}
+
+.product-image-btn {
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
 }
