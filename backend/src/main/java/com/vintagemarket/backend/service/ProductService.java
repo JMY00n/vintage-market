@@ -3,8 +3,10 @@ package com.vintagemarket.backend.service;
 import com.vintagemarket.backend.dto.ProductRequest;
 import com.vintagemarket.backend.dto.ProductResponse;
 import com.vintagemarket.backend.entity.Product;
+import com.vintagemarket.backend.entity.ProductImage;
 import com.vintagemarket.backend.entity.User;
 import com.vintagemarket.backend.repository.AuthRepository;
+import com.vintagemarket.backend.repository.ProductImageRepository;
 import com.vintagemarket.backend.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,9 +19,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
     private final AuthRepository authRepository;
 
     private ProductResponse toResponse(Product product) {
+        List<String> imageUrls = productImageRepository.findByProductOrderBySortOrder(product)
+                .stream()
+                .map(ProductImage::getImageUrl)
+                .toList();
+
         return new ProductResponse(
                 product.getId(),
                 product.getSeller().getNickname(),
@@ -28,7 +36,8 @@ public class ProductService {
                 product.getPrice(),
                 product.getDescription(),
                 product.getCategory(),
-                product.getStatus().name()
+                product.getStatus().name(),
+                imageUrls
         );
     }
 

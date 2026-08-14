@@ -6,7 +6,7 @@ export default function DetailHeader() {
     const navigate = useNavigate();
   return (
         <div className="detail-header">
-            <MoveLeft size={20} onClick={() => navigate(-1)}/>
+            <MoveLeft size={20} onClick={() => navigate("/")}/>
             <h3>상품상세</h3>
             <MenuIcon size={20}/>
         </div>

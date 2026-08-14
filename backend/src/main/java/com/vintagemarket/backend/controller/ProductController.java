@@ -2,12 +2,14 @@ package com.vintagemarket.backend.controller;
 
 import com.vintagemarket.backend.dto.ProductRequest;
 import com.vintagemarket.backend.dto.ProductResponse;
+import com.vintagemarket.backend.service.ProductImageService;
 import com.vintagemarket.backend.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,12 +18,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService service;
+    private final ProductImageService productImageService;
 
     @PostMapping("/create")
     public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest request) {
         ProductResponse response = service.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/{id}/images")
+    public ResponseEntity<List<String>> uploadImage(
+            @PathVariable Long id,
+            @RequestParam("images") List<MultipartFile> files) {
+        List<String> urls = productImageService.uploadImages(id, files);
+
+        return ResponseEntity.ok(urls);
     }
 
     @GetMapping

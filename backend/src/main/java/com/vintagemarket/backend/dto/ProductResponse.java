@@ -3,6 +3,8 @@ package com.vintagemarket.backend.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 public class ProductResponse {
@@ -14,4 +16,5 @@ public class ProductResponse {
     private String description;
     private String category;
     private String status;
+    private List<String> imageUrls;
 }
