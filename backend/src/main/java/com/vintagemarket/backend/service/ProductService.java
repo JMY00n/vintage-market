@@ -60,7 +60,7 @@ public class ProductService {
     }
 
     public List<ProductResponse> getAll() {
-        return productRepository.findAll().stream()
+        return productRepository.findAllByOrderByIdDesc().stream()
                 .map(this::toResponse)
                 .toList();
     }

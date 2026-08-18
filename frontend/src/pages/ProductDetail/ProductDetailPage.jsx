@@ -26,7 +26,7 @@ function ProductDetailPage() {
     <div className="detail-page">
       <div className="detail-page-wrapper">
         <DetailHeader />
-        <ProductImageSlider />
+        <ProductImageSlider imageUrls={product.imageUrls} />
         <SellerInfo sellerName={product.sellerName} sellerVerified={product.sellerVerified}/>
         <div className="detail-info">
           <h3 className="detail-title">{product.title}</h3>

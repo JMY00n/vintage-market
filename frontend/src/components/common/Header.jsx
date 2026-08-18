@@ -14,7 +14,7 @@ function Header() {
 
     return (
         <div className="home-header">
-            <h3>Vintage market</h3>
+            <h3 onClick={() => navigate("/")}>Vintage market</h3>
             <div className="header-icons">
                 {!isLoggedIn ? (
                     <LogIn size={20} onClick={() => navigate("/login")} />
