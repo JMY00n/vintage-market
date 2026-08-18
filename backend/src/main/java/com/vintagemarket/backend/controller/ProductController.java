@@ -46,4 +46,10 @@ public class ProductController {
     public ResponseEntity<ProductResponse> getOne(@PathVariable Long id) {
         return ResponseEntity.ok(service.getOne(id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok().body("삭제 완료");
+    }
 }

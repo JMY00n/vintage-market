@@ -1,7 +1,6 @@
 package com.vintagemarket.backend.repository;
 
 import com.vintagemarket.backend.entity.Product;
-import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +10,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategoryOrderByIdDesc(String category);
     List<Product> findAllByOrderByIdDesc();
+    void deleteById(Long id);
 
 }

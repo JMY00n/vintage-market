@@ -23,15 +23,26 @@ function ProductDetailPage() {
   useEffect(() => {
     getProduct(id)
       .then((response) => setProduct(response.data))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setError(err);
+      });
   }, [id]);
 
+  useEffect(() => {
+    if (error) {
+      alert("이미 삭제된 게시글입니다.");
+      navigate("/");
+    }
+  }, [error, navigate]);
+
+  if (error) return null;
   if (!product) return <div>상품정보 불러오는 중...</div>
 
   return (
     <div className="detail-page">
       <div className="detail-page-wrapper">
-        <DetailHeader />
+        <DetailHeader productId={product.id} sellerId={product.sellerId}/>
         <ProductImageSlider imageUrls={product.imageUrls} />
         <SellerInfo sellerName={product.sellerName} sellerVerified={product.sellerVerified}/>
         <div className="detail-info">

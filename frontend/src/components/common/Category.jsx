@@ -1,6 +1,6 @@
 import "./Category.css";
 
-const categories = ["전체", "상의", "아우터", "신발", "모자", "기타"];
+const categories = ["전체", "상의", "하의", "아우터", "신발", "모자", "기타"];
 
 function Category({ selected, onSelect }) {
     

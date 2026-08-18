@@ -7,3 +7,4 @@ export const createProduct = (data) => apiClient.post('/api/products/create', da
 export const productImageAdd = (id , data) => apiClient.post(`/api/products/${id}/images`, data, {
     headers: { "Content-Type" : undefined},
 });
+export const deleteProduct = (id) => apiClient.delete(`/api/products/${id}`);

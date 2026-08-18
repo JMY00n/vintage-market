@@ -8,6 +8,7 @@ import com.vintagemarket.backend.entity.User;
 import com.vintagemarket.backend.repository.AuthRepository;
 import com.vintagemarket.backend.repository.ProductImageRepository;
 import com.vintagemarket.backend.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class ProductService {
 
         return new ProductResponse(
                 product.getId(),
+                product.getSeller().getId(),
                 product.getSeller().getNickname(),
                 product.getSeller().getRole() == User.Role.STORE,
                 product.getTitle(),
@@ -79,5 +81,14 @@ public class ProductService {
         return toResponse(product);
 
 
+    }
+
+    @Transactional
+    public void delete(long id) {
+        Product product = productRepository.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("이미 삭제된 게시글입니다."));
+
+        productImageRepository.deleteByProduct(product);
+        productRepository.deleteById(id);
     }
 }

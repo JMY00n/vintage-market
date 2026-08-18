@@ -198,6 +198,7 @@ export default function ProductForm() {
                                 >
                                     <option value="">카테고리 선택</option>
                                     <option value="상의">상의</option>
+                                    <option value="하의">하의</option>
                                     <option value="아우터">아우터</option>
                                     <option value="신발">신발</option>
                                     <option value="모자">모자</option>

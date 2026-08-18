@@ -64,4 +64,8 @@ public class ProductImageService {
 
         return urls;
     }
+
+    public void delete(Long no) {
+        productImageRepository.deleteById(no);
+    }
 }
