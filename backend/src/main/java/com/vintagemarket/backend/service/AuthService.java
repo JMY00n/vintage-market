@@ -5,6 +5,8 @@ import com.vintagemarket.backend.dto.LoginResponse;
 import com.vintagemarket.backend.dto.SignUpRequest;
 import com.vintagemarket.backend.dto.SignUpResponse;
 import com.vintagemarket.backend.entity.User;
+import com.vintagemarket.backend.exception.DuplicateEmailException;
+import com.vintagemarket.backend.exception.InvalidCredentialsException;
 import com.vintagemarket.backend.repository.AuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +21,7 @@ public class AuthService {
 
     public SignUpResponse signUp(SignUpRequest request) {
         if (authRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalStateException("이미 가입된 이메일입니다.");
+            throw new DuplicateEmailException("이미 가입된 이메일입니다.");
         }
 
         User user = User.builder()
@@ -36,10 +38,10 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         User user = authRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+                .orElseThrow(() -> new InvalidCredentialsException("이메일 또는 비밀번호가 일치하지 않습니다."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidCredentialsException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
         return new LoginResponse(user.getId(), user.getEmail(), user.getNickname());

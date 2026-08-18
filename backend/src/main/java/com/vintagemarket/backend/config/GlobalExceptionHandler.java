@@ -1,5 +1,9 @@
 package com.vintagemarket.backend.config;
 
+import com.vintagemarket.backend.exception.DuplicateEmailException;
+import com.vintagemarket.backend.exception.InvalidCredentialsException;
+import com.vintagemarket.backend.exception.ProductNotFoundException;
+import com.vintagemarket.backend.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,14 +16,24 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handle회원가입중복(IllegalStateException e) {
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<String> handle회원가입중복(DuplicateEmailException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handle로그인검증(IllegalArgumentException e) {
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<String> handle로그인검증(InvalidCredentialsException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handle상품없음(ProductNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handle유저없음(UserNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

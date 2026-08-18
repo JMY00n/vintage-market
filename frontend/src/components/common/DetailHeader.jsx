@@ -9,7 +9,6 @@ export default function DetailHeader({ productId, sellerId }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleMenuToggle = () => {
-      console.log(isMenuOpen);
       setIsMenuOpen((prev) => !prev);
     }
 
@@ -18,7 +17,8 @@ export default function DetailHeader({ productId, sellerId }) {
       const loggedInUserId = loggedInUser?.id;
 
       if (sellerId !== loggedInUserId) {
-        console.log(id, loggedInUserId);
+        console.log(sellerId);
+        console.log(loggedInUser.id);
         alert("작성자만 삭제 가능합니다.");
         return;
       }

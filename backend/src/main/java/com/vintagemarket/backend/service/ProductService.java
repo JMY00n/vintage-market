@@ -5,6 +5,8 @@ import com.vintagemarket.backend.dto.ProductResponse;
 import com.vintagemarket.backend.entity.Product;
 import com.vintagemarket.backend.entity.ProductImage;
 import com.vintagemarket.backend.entity.User;
+import com.vintagemarket.backend.exception.ProductNotFoundException;
+import com.vintagemarket.backend.exception.UserNotFoundException;
 import com.vintagemarket.backend.repository.AuthRepository;
 import com.vintagemarket.backend.repository.ProductImageRepository;
 import com.vintagemarket.backend.repository.ProductRepository;
@@ -45,7 +47,7 @@ public class ProductService {
 
     public ProductResponse create(ProductRequest request) {
         User seller = authRepository.findById(request.getSellerId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 판매자입니다."));
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 판매자입니다."));
 
         Product product = Product.builder()
                 .seller(seller)
@@ -77,16 +79,14 @@ public class ProductService {
 
     public ProductResponse getOne(long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+                .orElseThrow(() -> new ProductNotFoundException("존재하지 않는 상품입니다."));
         return toResponse(product);
-
-
     }
 
     @Transactional
     public void delete(long id) {
         Product product = productRepository.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("이미 삭제된 게시글입니다."));
+                        .orElseThrow(() -> new ProductNotFoundException("이미 삭제된 상품입니다."));
 
         productImageRepository.deleteByProduct(product);
         productRepository.deleteById(id);

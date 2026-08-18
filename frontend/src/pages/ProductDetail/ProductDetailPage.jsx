@@ -8,6 +8,7 @@ import DetailHeader from "../../components/common/DetailHeader";
 import ProductImageSlider from "../../components/product/ProductImageSlider";
 import SellerInfo from "../../components/product/SellerInfo";
 import DetailBottom from "../../components/common/DetailBottom";
+import ErrorModal from "../../components/error/ErrorModal";
 
 const STATUS_MAP = {
   ON_SALE: { label: "판매중", className: "status-onsale"},
@@ -18,25 +19,18 @@ const STATUS_MAP = {
 function ProductDetailPage() {
   const { id } = useParams();
   const [ product, setProduct ] = useState(null);
+  const [ error, setError ] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     getProduct(id)
       .then((response) => setProduct(response.data))
       .catch((err) => {
-        console.log(err);
-        setError(err);
+        const message = err.response?.data ?? "일시적인 오류가 발생했습니다";
+        setError(message);
       });
   }, [id]);
-
-  useEffect(() => {
-    if (error) {
-      alert("이미 삭제된 게시글입니다.");
-      navigate("/");
-    }
-  }, [error, navigate]);
-
-  if (error) return null;
+  if (error) return <ErrorModal message={error} onConfrim={() => navigate("/")} />
   if (!product) return <div>상품정보 불러오는 중...</div>
 
   return (

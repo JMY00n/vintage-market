@@ -4,6 +4,7 @@ import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
 import ProductDetailPage from "../pages/ProductDetail/ProductDetailPage";
 import ProductForm from "../pages/ProductForm/ProductForm";
+import ErrorModal from "../components/error/ErrorModal";
 
 export const router = createBrowserRouter([
     { path: "/", element: <Home />},
