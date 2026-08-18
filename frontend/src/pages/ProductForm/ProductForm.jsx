@@ -76,12 +76,17 @@ export default function ProductForm() {
         e.preventDefault();
 
         if (!formData.title) {
-            alert("카테고리를 선택해주세요.");
+            alert("상품 이름을 입력해주세요.");
             return;
         }
 
         if (!formData.price || isNaN(formData.price) || Number(formData.price) <= 0) {
             alert("가격을 올바르게 입력해주세요.");
+            return;
+        }
+
+        if (!formData.category) {
+            alert("카테고리를 선택해주세요.");
             return;
         }
 
@@ -114,7 +119,13 @@ export default function ProductForm() {
             navigate(`/products/${response.data.id}`);
         } catch (err) {
             console.log(err);
-            setError("상품 등록에 문제가 발생했습니다.")
+            
+            if (err.response?.status === 400 && err.response.data) {
+                const firstError = Object.values(err.response.data)[0];
+                setError(firstError);
+            } else {
+                setError("상품 등록에 문제가 발생했습니다.")
+            }
         }
     };
 

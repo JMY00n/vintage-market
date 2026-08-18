@@ -4,6 +4,7 @@ import com.vintagemarket.backend.dto.ProductRequest;
 import com.vintagemarket.backend.dto.ProductResponse;
 import com.vintagemarket.backend.service.ProductImageService;
 import com.vintagemarket.backend.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ProductController {
     private final ProductImageService productImageService;
 
     @PostMapping("/create")
-    public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest request) {
         ProductResponse response = service.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
