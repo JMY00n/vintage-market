@@ -12,6 +12,7 @@ export default function ProductCard({ product }) {
                     <img 
                         src={`http://localhost:8080${product.imageUrls[0]}`}
                         alt={product.title}
+                        loading="lazy"
                     />
                 ) : null}
             </div>

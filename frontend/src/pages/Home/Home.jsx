@@ -9,18 +9,19 @@ import { getProducts } from "../../api/productApi";
 
 function Home() {
     const [products, setProducts] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("전체");
 
     useEffect(() => {
-        getProducts()
+        getProducts(selectedCategory)
             .then((response) => setProducts(response.data))
             .catch((err) => console.log(err));
-    }, []);
+    }, [selectedCategory]);
 
     return (
         <div className="home-page">
             <div className="home-wrapper">
                 <Header />
-                <Category />
+                <Category selected={selectedCategory} onSelect={setSelectedCategory} />
                 <div className="product-grid">
                     {products.map((product) => (
                         <ProductCard key={product.id} product={product} />

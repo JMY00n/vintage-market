@@ -38,9 +38,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAll() {
-        List<ProductResponse> products = service.getAll();
-        return ResponseEntity.ok(products);
+    public ResponseEntity<List<ProductResponse>> getAll(@RequestParam(required = false) String category) {
+        return ResponseEntity.ok(service.getAll(category));
     }
 
     @GetMapping("/{id}")

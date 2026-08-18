@@ -9,6 +9,12 @@ import ProductImageSlider from "../../components/product/ProductImageSlider";
 import SellerInfo from "../../components/product/SellerInfo";
 import DetailBottom from "../../components/common/DetailBottom";
 
+const STATUS_MAP = {
+  ON_SALE: { label: "판매중", className: "status-onsale"},
+  RESERVED: { label: "예약됨", className: "status-reserved"},
+  SOLD: { label: "판매완료", className: "status-sold"}
+}
+
 function ProductDetailPage() {
   const { id } = useParams();
   const [ product, setProduct ] = useState(null);
@@ -34,7 +40,9 @@ function ProductDetailPage() {
         </div>
         <div className="detail-category">
           <button className="detail-category-btn">{product.category}</button>
-          <button className="detail-sale-btn">판매중</button>
+          <button className={STATUS_MAP[product.status]?.className}>
+            {STATUS_MAP[product.status]?.label}
+          </button>
         </div>
         <div className="detail-desc">
           <p className="desc-label">상품 설명</p>

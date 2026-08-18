@@ -5,6 +5,7 @@ import com.vintagemarket.backend.entity.ProductImage;
 import com.vintagemarket.backend.repository.ProductImageRepository;
 import com.vintagemarket.backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,13 +34,17 @@ public class ProductImageService {
 
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
-
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
             try {
                 Path path = Paths.get(uploadDir + fileName);
                 Files.createDirectories(path.getParent());
-                Files.write(path, file.getBytes());
+
+                Thumbnails.of(file.getInputStream())
+                        .size(800, 800)
+                        .outputQuality(0.8)
+                        .toFile(path.toFile());
+
             } catch (IOException e) {
                 throw new RuntimeException("파일 저장 실패 : " + fileName, e);
             }

@@ -59,8 +59,16 @@ public class ProductService {
         return toResponse(saved);
     }
 
-    public List<ProductResponse> getAll() {
-        return productRepository.findAllByOrderByIdDesc().stream()
+    public List<ProductResponse> getAll(String category) {
+        List<Product> products;
+
+        if (category == null || category.equals("전체")) {
+            products = productRepository.findAllByOrderByIdDesc();
+        } else {
+            products = productRepository.findByCategoryOrderByIdDesc(category);
+        }
+
+        return products.stream()
                 .map(this::toResponse)
                 .toList();
     }
