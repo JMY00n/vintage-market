@@ -58,7 +58,7 @@ vintage-market
 
 #### 메인페이지
  
-<img width="500" alt="메인페이지" src="https://github.com/user-attachments/assets/613659d0-b2da-490f-bfd0-32fbdd013719" />
+<img width="400" height="500" alt="localhost_5173_ (1)" src="https://github.com/user-attachments/assets/06cc9397-0230-4488-9c6d-fab5f1370ed3" />
 
-> 상품 목록은 현재 더미데이터로 출력 중입니다.
+
 
