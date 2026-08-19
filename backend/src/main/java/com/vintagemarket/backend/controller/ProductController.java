@@ -40,8 +40,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAll(@RequestParam(required = false) String category) {
-        return ResponseEntity.ok(service.getAll(category));
+    public ResponseEntity<List<ProductResponse>> getAll(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String keyword
+    ) {
+        return ResponseEntity.ok(service.getAll(category, keyword));
     }
 
     @GetMapping("/{id}")

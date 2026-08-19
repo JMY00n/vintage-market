@@ -66,14 +66,8 @@ public class ProductService {
         return toResponse(saved);
     }
 
-    public List<ProductResponse> getAll(String category) {
-        List<Product> products;
-
-        if (category == null || category.equals("전체")) {
-            products = productRepository.findAllByOrderByIdDesc();
-        } else {
-            products = productRepository.findByCategoryOrderByIdDesc(category);
-        }
+    public List<ProductResponse> getAll(String category, String keyword) {
+        List<Product> products = productRepository.search(category, keyword);
 
         return products.stream()
                 .map(this::toResponse)

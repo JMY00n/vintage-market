@@ -5,6 +5,7 @@ import SignUp from "../pages/SignUp/SignUp";
 import ProductDetailPage from "../pages/ProductDetail/ProductDetailPage";
 import ProductForm from "../pages/ProductForm/ProductForm";
 import ErrorModal from "../components/error/ErrorModal";
+import SearchPage from "../components/common/SearchPage";
 
 export const router = createBrowserRouter([
     { path: "/", element: <Home />},
@@ -13,4 +14,5 @@ export const router = createBrowserRouter([
     { path: "/products/form", element: <ProductForm />},
     { path: "/products/:id/edit", element: <ProductForm />},
     { path: "/products/:id", element: <ProductDetailPage />},
+    { path: "/search", element: <SearchPage />},
 ]);

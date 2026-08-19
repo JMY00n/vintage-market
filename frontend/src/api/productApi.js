@@ -1,6 +1,6 @@
 import apiClient from "./axiosInstance";
 
-export const getProducts = (category) => apiClient.get("/api/products", {params: { category }});
+export const getProducts = (category, keyword) => apiClient.get("/api/products", {params: { category, keyword }});
 
 export const getProduct = (id) => apiClient.get(`/api/products/${id}`);
 

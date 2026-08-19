@@ -10,17 +10,18 @@ import { getProducts } from "../../api/productApi";
 function Home() {
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("전체");
+    const [keyword, setKeyWord] = useState("");
 
     useEffect(() => {
         getProducts(selectedCategory)
             .then((response) => setProducts(response.data))
             .catch((err) => console.log(err));
-    }, [selectedCategory]);
+    }, [selectedCategory, keyword]);
 
     return (
         <div className="home-page">
             <div className="home-wrapper">
-                <Header />
+                <Header onSearch={keyword} />
                 <Category selected={selectedCategory} onSelect={setSelectedCategory} />
                 <div className="product-grid">
                     {products.map((product) => (

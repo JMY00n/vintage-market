@@ -21,7 +21,7 @@ function Header() {
                 ) : (
                     <LogOut size={20} onClick={handleLogout}/>
                 )}
-                <Search size={20}/>
+                <Search size={20} onClick={() => navigate("/search")} />
                 <Bell size={20}/>
             </div>
         </div>
