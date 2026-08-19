@@ -13,7 +13,7 @@ export default function FilterBar() {
                 checked={excludeSold}
                 onChange={(e) => setExcludeSold(e.target.checked)}
             />
-            <span>판매완료 제외</span>
+            <span>판매완료 / 예약 제외</span>
         </label>
 
         <select
