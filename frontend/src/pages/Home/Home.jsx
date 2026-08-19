@@ -6,6 +6,7 @@ import ProductCard from "../../components/product/ProductCard";
 import BottomNav from "../../components/common/BottomNav";
 import { useEffect, useState } from "react";
 import { getProducts } from "../../api/productApi";
+import FilterBar from "../../components/common/FilterBar";
 
 function Home() {
     const [products, setProducts] = useState([]);
@@ -23,6 +24,7 @@ function Home() {
             <div className="home-wrapper">
                 <Header onSearch={keyword} />
                 <Category selected={selectedCategory} onSelect={setSelectedCategory} />
+                <FilterBar />
                 <div className="product-grid">
                     {products.map((product) => (
                         <ProductCard key={product.id} product={product} />

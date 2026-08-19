@@ -17,6 +17,7 @@ function Category({ selected, onSelect }) {
                 </button>
             ))}
         </div>
+        
     </div>
   )
 }
