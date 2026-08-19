@@ -3,6 +3,7 @@ package com.vintagemarket.backend.controller;
 import com.vintagemarket.backend.dto.ProductRequest;
 import com.vintagemarket.backend.dto.ProductResponse;
 import com.vintagemarket.backend.dto.ProductUpdateRequest;
+import com.vintagemarket.backend.dto.StatusUpdateRequest;
 import com.vintagemarket.backend.service.ProductImageService;
 import com.vintagemarket.backend.service.ProductService;
 import jakarta.validation.Valid;
@@ -61,6 +62,16 @@ public class ProductController {
             @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages
             ) {
         ProductResponse response = service.update(id, request, newImages);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ProductResponse> updateStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody StatusUpdateRequest request
+            ) {
+        ProductResponse response = service.updateStatus(id, request.getStatus());
 
         return ResponseEntity.ok(response);
     }

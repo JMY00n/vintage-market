@@ -118,4 +118,21 @@ public class ProductService {
 
         return toResponse(product);
     }
+
+    @Transactional
+    public ProductResponse updateStatus(Long id, String status) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("이미 삭제된 게시글입니다."));
+
+        Product.Status newStatus;
+        try {
+            newStatus = Product.Status.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("올바르지 않은 상태값입니다.");
+        }
+
+        product.updateStatus(newStatus);
+
+        return toResponse(product);
+    }
 }

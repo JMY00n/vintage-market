@@ -46,6 +46,10 @@ public class Product {
         this.category = category;
     }
 
+    public void updateStatus(Status status) {
+        this.status = status;
+    }
+
     public enum Status {
         ON_SALE, RESERVED, SOLD
     }
