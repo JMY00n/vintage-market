@@ -1,14 +1,18 @@
 import "./DetailHeader.css";
 import { MoveLeft, MenuIcon } from "lucide-react";
-import { useState } from "react";
+import { useReducer, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../api/productApi";
 import useIsOwner from "../../hook/useIsOwner";
+import useClickOutside from "../../hook/useClickOutside";
 
 export default function DetailHeader({ productId, sellerId }) {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isOwner = useIsOwner(sellerId);
+
+  const headerRef = useRef(null);
+  useClickOutside(headerRef, () => setIsMenuOpen(false));
 
   const handleMenuToggle = () => {
     setIsMenuOpen((prev) => !prev);
@@ -35,7 +39,7 @@ export default function DetailHeader({ productId, sellerId }) {
   }
 
   return (
-    <div className="detail-header">
+    <div className="detail-header" ref={headerRef}>
       <MoveLeft size={20} onClick={() => navigate("/")} />
       <h3>상품상세</h3>
 

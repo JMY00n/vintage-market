@@ -33,6 +33,57 @@
     gap: 8px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
+    position: relative;
+}
+
+.detail-category-more {
+    border: none;
+    background: none;
+    background-color: inherit;
+    margin-left: auto;
+    margin-right: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.status-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-width: 100px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.status-dropdown-menu button {
+    padding: 12px 16px;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.status-dropdown-menu button:hover {
+    background-color: var(--bg-neutral);
+}
+
+.on-sale {
+    color: var(--text-success);
+}
+.reserved {
+    color: var(--text-neutral);
+}
+.sold {
+    color: var(--text-danger);
 }
 
 .detail-category-btn,
