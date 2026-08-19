@@ -33,36 +33,39 @@ public class ProductImageService {
         List<String> urls = new ArrayList<>();
 
         for (int i = 0; i < files.size(); i++) {
-            MultipartFile file = files.get(i);
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-
-            try {
-                Path path = Paths.get(uploadDir + fileName);
-                Files.createDirectories(path.getParent());
-
-                Thumbnails.of(file.getInputStream())
-                        .size(800, 800)
-                        .outputQuality(0.8)
-                        .toFile(path.toFile());
-
-            } catch (IOException e) {
-                throw new RuntimeException("파일 저장 실패 : " + fileName, e);
-            }
-
-            String imageUrl = "/uploads/" + fileName;
-
-            ProductImage image = ProductImage.builder()
-                    .product(product)
-                    .imageUrl(imageUrl)
-                    .sortOrder(i)
-                    .build();
-
-            productImageRepository.save(image);
-
+            String imageUrl = saveSingleImage(product, files.get(i), i);
             urls.add(imageUrl);
         }
 
         return urls;
+    }
+
+    public String saveSingleImage(Product product, MultipartFile file, int sortOrder) {
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+
+        try {
+            Path path = Paths.get(uploadDir + fileName);
+            Files.createDirectories(path.getParent());
+
+            Thumbnails.of(file.getInputStream())
+                    .size(800, 800)
+                    .outputQuality(0.8)
+                    .toFile(path.toFile());
+        } catch (IOException e) {
+            throw new RuntimeException("파일 저장 실패 : " + fileName, e);
+        }
+
+        String imageUrl = "/uploads/" + fileName;
+
+        ProductImage image = ProductImage.builder()
+                .product(product)
+                .imageUrl(imageUrl)
+                .sortOrder(sortOrder)
+                .build();
+
+        productImageRepository.save(image);
+
+        return imageUrl;
     }
 
     public void delete(Long no) {

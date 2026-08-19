@@ -2,6 +2,7 @@ package com.vintagemarket.backend.controller;
 
 import com.vintagemarket.backend.dto.ProductRequest;
 import com.vintagemarket.backend.dto.ProductResponse;
+import com.vintagemarket.backend.dto.ProductUpdateRequest;
 import com.vintagemarket.backend.service.ProductImageService;
 import com.vintagemarket.backend.service.ProductService;
 import jakarta.validation.Valid;
@@ -51,5 +52,16 @@ public class ProductController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.ok().body("삭제 완료");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> update(
+            @PathVariable Long id,
+            @RequestPart("product") @Valid ProductUpdateRequest request,
+            @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages
+            ) {
+        ProductResponse response = service.update(id, request, newImages);
+
+        return ResponseEntity.ok(response);
     }
 }

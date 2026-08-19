@@ -1,17 +1,40 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../../styles/AuthForm.css";
 import "./ProductForm.css";
 import "../../styles/global.css";
 import { MoveLeft, Camera } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { createProduct, productImageAdd } from "../../api/productApi";
+import { useNavigate, useParams } from "react-router-dom";
+import { createProduct, getProduct, productImageAdd, updateProduct } from "../../api/productApi";
 
 export default function ProductForm() {
+    const { id } = useParams();
+    const isEditMode = Boolean(id);
+
     const navigate = useNavigate();
     const [error, setError] = useState("");
 
     const [images, setImages] = useState([]);
-    const [previews, setPreviews] = useState([]);
+
+    useEffect(() => {
+        if (isEditMode) {
+            getProduct(id)
+                .then((response) => {
+                    setFormData({
+                        title: response.data.title,
+                        price: response.data.price,
+                        description: response.data.description,
+                        category: response.data.category,
+                    });
+
+                    const existingImages = response.data.imageUrls.map((url, index) => ({
+                        id: `existing-${index}`,
+                        type: 'existing',
+                        url,
+                    }));
+                    setImages(existingImages);
+                });
+        }
+    }, [id]);
 
     // 드래그
     const scrollRef = useRef(null);
@@ -37,11 +60,6 @@ export default function ProductForm() {
         setIsDragging(false);
     };
 
-    const removeImage = (indexToRemove) => {
-        setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
-        setPreviews((prev) => prev.filter((_, index) => index !== indexToRemove));
-    }
-
     const [formData, setFormData] = useState({
         title: "",
         price: "",
@@ -66,11 +84,20 @@ export default function ProductForm() {
             return;
         }
 
-        setImages((prev) => [...prev, ...files]);
+        const newImages = files.map((file) => ({
+            id: `new-${file.name}-${Date.now()}`,
+            type: 'new',
+            url: URL.createObjectURL(file), // 미리보기용 임시 URL
+            file: file,                     // 나중에 실제 업로드할 진짜 파일
+        }));
 
-        const newPreviews = files.map((file) => URL.createObjectURL(file));
-        setPreviews((prev) => [...prev, ...newPreviews]);
+        setImages((prev) => [...prev, ...newImages]);
+        e.target.value = "";
     }
+
+    const removeImage = (idToRemove) => {
+        setImages((prev) => prev.filter((img) => img.id !== idToRemove));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -99,32 +126,58 @@ export default function ProductForm() {
         }
 
         try {
-            const response = await createProduct({
-                sellerId: user.id,
-                title: formData.title,
-                price: formData.price,
-                description: formData.description,
-                category: formData.category,
-            });
-            
-            const productId = response.data.id;
+            if (isEditMode) {
+                // 수정 모드
+                const productData = {
+                    title: formData.title,
+                    price: formData.price,
+                    description: formData.description,
+                    category: formData.category,
+                    keepImageUrls: images
+                        .filter((img) => img.type === 'existing')
+                        .map((img) => img.url),
+                };
 
-            if (images.length > 0) {
-                const imageFormData = new FormData();
-                images.forEach((file) => imageFormData.append("images", file));
+                const multipartFormData = new FormData();
+                multipartFormData.append(
+                    "product",
+                    new Blob([JSON.stringify(productData)], { type: "application/json" })
+                );
 
-                await productImageAdd(productId, imageFormData);
+                images
+                    .filter((img) => img.type === 'new')
+                    .forEach((img) => multipartFormData.append("newImages", img.file));
+
+                await updateProduct(id, multipartFormData);
+                navigate(`/products/${id}`);
+
+            } else {
+                // 기존 등록 로직 그대로
+                const response = await createProduct({
+                    sellerId: user.id,
+                    title: formData.title,
+                    price: formData.price,
+                    description: formData.description,
+                    category: formData.category,
+                });
+
+                const productId = response.data.id;
+
+                if (images.length > 0) {
+                    const imageFormData = new FormData();
+                    images.forEach((img) => imageFormData.append("images", img.file || img));
+                    await productImageAdd(productId, imageFormData);
+                }
+
+                navigate(`/products/${response.data.id}`);
             }
-
-            navigate(`/products/${response.data.id}`);
         } catch (err) {
             console.log(err);
-            
             if (err.response?.status === 400 && err.response.data) {
                 const firstError = Object.values(err.response.data)[0];
                 setError(firstError);
             } else {
-                setError("상품 등록에 문제가 발생했습니다.")
+                setError(isEditMode ? "상품 수정에 문제가 발생했습니다." : "상품 등록에 문제가 발생했습니다.");
             }
         }
     };
@@ -163,13 +216,17 @@ export default function ProductForm() {
                                     />
                                 </label>
                             )}
-                            {previews.map((url, index) => (
-                                <div key={index} className="image-preview">
-                                    <img src={url} alt={`업로드 ${index + 1}`} draggable={false} />
+                            {images.map((img) => (
+                                <div key={img.id} className="image-preview">
+                                    <img
+                                        src={img.type === 'new' ? img.url : `http://localhost:8080${img.url}`}
+                                        alt="미리보기"
+                                        draggable={false}
+                                    />
                                     <button
                                         className="image-remove-btn"
                                         type="button"
-                                        onClick={() => removeImage(index)}
+                                        onClick={() => removeImage(img.id)}
                                     >
                                         x
                                     </button>
@@ -222,11 +279,11 @@ export default function ProductForm() {
                                 <p className="product-input-title">
                                     상품 설명
                                 </p>
-                                <textarea 
-                                    name="description" 
-                                    type="text" 
-                                    placeholder="상품 상태, 사이즈, 거래 방식 등을 자유롭게 적어주세요" 
-                                    className="product-input-desc" 
+                                <textarea
+                                    name="description"
+                                    type="text"
+                                    placeholder="상품 상태, 사이즈, 거래 방식 등을 자유롭게 적어주세요"
+                                    className="product-input-desc"
                                     value={formData.description}
                                     onChange={handleChange}
                                 />

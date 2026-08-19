@@ -39,6 +39,13 @@ public class Product {
     @Column(nullable = false, updatable = false)
     private LocalDateTime create_at;
 
+    public void update(String title, int price, String description, String category) {
+        this.title = title;
+        this.price = price;
+        this.description = description;
+        this.category = category;
+    }
+
     public enum Status {
         ON_SALE, RESERVED, SOLD
     }

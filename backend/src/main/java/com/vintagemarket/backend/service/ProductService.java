@@ -2,6 +2,7 @@ package com.vintagemarket.backend.service;
 
 import com.vintagemarket.backend.dto.ProductRequest;
 import com.vintagemarket.backend.dto.ProductResponse;
+import com.vintagemarket.backend.dto.ProductUpdateRequest;
 import com.vintagemarket.backend.entity.Product;
 import com.vintagemarket.backend.entity.ProductImage;
 import com.vintagemarket.backend.entity.User;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final AuthRepository authRepository;
+    private final ProductImageService productImageService;
 
     private ProductResponse toResponse(Product product) {
         List<String> imageUrls = productImageRepository.findByProductOrderBySortOrder(product)
@@ -90,5 +93,29 @@ public class ProductService {
 
         productImageRepository.deleteByProduct(product);
         productRepository.deleteById(id);
+    }
+
+    @Transactional
+    public ProductResponse update(Long id, ProductUpdateRequest request, List<MultipartFile> newImages) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("이미 삭제된 게시글입니다."));
+
+        product.update(request.getTitle(), request.getPrice(), request.getDescription(), request.getCategory());
+
+        List<ProductImage> currentImages = productImageRepository.findByProduct(product);
+        List<ProductImage> toDelete = currentImages.stream()
+                .filter(img -> !request.getKeepImageUrls().contains(img.getImageUrl()))
+                .toList();
+        productImageRepository.deleteAll(toDelete);
+
+        int keepCount = currentImages.size() - toDelete.size();
+
+        if (newImages != null) {
+            for (int i = 0; i < newImages.size(); i++) {
+                productImageService.saveSingleImage(product, newImages.get(i), keepCount + i);
+            }
+        }
+
+        return toResponse(product);
     }
 }
