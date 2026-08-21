@@ -10,9 +10,6 @@ import lombok.Getter;
 @Getter
 public class ProductRequest {
 
-    @NotNull
-    private Long sellerId;
-
     @NotBlank(message = "상품명을 입력해주세요.")
     private String title;
 

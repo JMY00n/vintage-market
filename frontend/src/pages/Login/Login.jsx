@@ -28,7 +28,11 @@ function Login() {
         /* 로그인 처리 api 호출 */
         try {
             const response = await login(formData);
-            localStorage.setItem("user", JSON.stringify(response.data));
+            const { token, ...userInfo } = response.data;
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(userInfo));
+
             navigate("/");
         } catch (err) {
             if (err.response?.status === 401) {

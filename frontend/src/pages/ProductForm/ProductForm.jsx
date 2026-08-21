@@ -154,7 +154,6 @@ export default function ProductForm() {
             } else {
                 // 기존 등록 로직 그대로
                 const response = await createProduct({
-                    sellerId: user.id,
                     title: formData.title,
                     price: formData.price,
                     description: formData.description,

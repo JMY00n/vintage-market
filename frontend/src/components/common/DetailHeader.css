@@ -51,3 +51,7 @@
 .dropdown-menu-delete {
     color: var(--text-danger);
 }
+
+.detail-header h3 {
+    cursor: pointer;
+}

@@ -15,9 +15,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     void deleteById(Long id);
 
     @Query("SELECT p FROM Product p WHERE " +
-        "(:category IS NULL OR :category = '전체' OR p.category = :category) AND " +
-            "(:keyword IS NULL OR :keyword = '' OR p.title LIKE CONCAT('%', :keyword, '%')) " +
+            "(:category IS NULL OR :category = '전체' OR p.category = :category) AND " +
+            "(:keyword IS NULL OR :keyword = '' OR p.title LIKE CONCAT('%', :keyword, '%')) AND " +
+            "(:onSaleOnly = false OR p.status = 'ON_SALE') " +
             "ORDER BY p.id DESC")
-    List<Product> search(@Param("category") String category, @Param("keyword") String keyword);
+    List<Product> search(@Param("category") String category,
+                         @Param("keyword") String keyword,
+                         @Param("onSaleOnly") boolean onSaleOnly);
 
 }

@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,8 +25,11 @@ public class ProductController {
     private final ProductImageService productImageService;
 
     @PostMapping("/create")
-    public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest request) {
-        ProductResponse response = service.create(request);
+    public ResponseEntity<ProductResponse> create(
+            @Valid @RequestBody ProductRequest request,
+            @AuthenticationPrincipal Long userId
+    ) {
+        ProductResponse response = service.create(request, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -33,8 +37,10 @@ public class ProductController {
     @PostMapping("/{id}/images")
     public ResponseEntity<List<String>> uploadImage(
             @PathVariable Long id,
-            @RequestParam("images") List<MultipartFile> files) {
-        List<String> urls = productImageService.uploadImages(id, files);
+            @RequestParam("images") List<MultipartFile> files,
+            @AuthenticationPrincipal Long userId
+            ) {
+        List<String> urls = productImageService.uploadImages(id, files, userId);
 
         return ResponseEntity.ok(urls);
     }
@@ -42,9 +48,10 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAll(
             @RequestParam(required = false) String category,
-            @RequestParam(required = false) String keyword
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "false") boolean onSaleOnly
     ) {
-        return ResponseEntity.ok(service.getAll(category, keyword));
+        return ResponseEntity.ok(service.getAll(category, keyword, onSaleOnly));
     }
 
     @GetMapping("/{id}")
@@ -53,8 +60,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Long id,
+                                    @AuthenticationPrincipal Long userId) {
+        service.delete(id, userId);
         return ResponseEntity.ok().body("삭제 완료");
     }
 
@@ -62,9 +70,10 @@ public class ProductController {
     public ResponseEntity<ProductResponse> update(
             @PathVariable Long id,
             @RequestPart("product") @Valid ProductUpdateRequest request,
-            @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages
+            @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages,
+            @AuthenticationPrincipal Long userId
             ) {
-        ProductResponse response = service.update(id, request, newImages);
+        ProductResponse response = service.update(id, request, newImages, userId);
 
         return ResponseEntity.ok(response);
     }
@@ -72,9 +81,10 @@ public class ProductController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<ProductResponse> updateStatus(
             @PathVariable Long id,
-            @Valid @RequestBody StatusUpdateRequest request
+            @Valid @RequestBody StatusUpdateRequest request,
+            @AuthenticationPrincipal Long userId
             ) {
-        ProductResponse response = service.updateStatus(id, request.getStatus());
+        ProductResponse response = service.updateStatus(id, request.getStatus(), userId);
 
         return ResponseEntity.ok(response);
     }

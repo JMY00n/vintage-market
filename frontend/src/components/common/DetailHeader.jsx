@@ -41,7 +41,7 @@ export default function DetailHeader({ productId, sellerId }) {
   return (
     <div className="detail-header" ref={headerRef}>
       <MoveLeft size={20} onClick={() => navigate(-1)} />
-      <h3>상품상세</h3>
+      <h3 onClick={() => navigate("/")}>상품상세</h3>
 
       {isOwner ? (
         <button onClick={handleMenuToggle}>

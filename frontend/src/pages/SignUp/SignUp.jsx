@@ -46,7 +46,7 @@ function SignUp() {
         role: formData.role,
         phone: formData.phone,
       });
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       if (err.response?.status === 409) {
         setError("이미 가입된 이메일입니다.");

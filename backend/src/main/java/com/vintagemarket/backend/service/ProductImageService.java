@@ -2,6 +2,7 @@ package com.vintagemarket.backend.service;
 
 import com.vintagemarket.backend.entity.Product;
 import com.vintagemarket.backend.entity.ProductImage;
+import com.vintagemarket.backend.exception.ForbiddenException;
 import com.vintagemarket.backend.repository.ProductImageRepository;
 import com.vintagemarket.backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,13 @@ public class ProductImageService {
 
     private final String uploadDir = "uploads/";
 
-    public List<String> uploadImages(Long productId, List<MultipartFile> files) {
+    public List<String> uploadImages(Long productId, List<MultipartFile> files, Long userId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+
+        if (!product.getSeller().getId().equals(userId)) {
+            throw new ForbiddenException("본인이 등록한 상품에만 이미지를 추가할 수 있습니다.");
+        }
 
         List<String> urls = new ArrayList<>();
 

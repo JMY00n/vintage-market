@@ -1,10 +1,17 @@
 .bottom-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 498px;
     display: flex;
     height: 50px;
     border-top: 1px solid var(--border-color);
     padding: 6px;
     align-items: center;
     justify-content: space-around;
+    background-color: white;
 }
 
 .nav-icon {

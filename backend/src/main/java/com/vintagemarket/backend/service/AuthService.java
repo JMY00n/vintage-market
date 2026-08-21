@@ -8,6 +8,7 @@ import com.vintagemarket.backend.entity.User;
 import com.vintagemarket.backend.exception.DuplicateEmailException;
 import com.vintagemarket.backend.exception.InvalidCredentialsException;
 import com.vintagemarket.backend.repository.AuthRepository;
+import com.vintagemarket.backend.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class AuthService {
 
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public SignUpResponse signUp(SignUpRequest request) {
         if (authRepository.existsByEmail(request.getEmail())) {
@@ -44,6 +46,8 @@ public class AuthService {
             throw new InvalidCredentialsException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
-        return new LoginResponse(user.getId(), user.getEmail(), user.getNickname());
+        String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
+
+        return new LoginResponse(user.getId(), user.getEmail(), user.getNickname(), token);
     }
 }

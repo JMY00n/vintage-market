@@ -6,14 +6,13 @@ import com.vintagemarket.backend.dto.ProductUpdateRequest;
 import com.vintagemarket.backend.entity.Product;
 import com.vintagemarket.backend.entity.ProductImage;
 import com.vintagemarket.backend.entity.User;
+import com.vintagemarket.backend.exception.ForbiddenException;
 import com.vintagemarket.backend.exception.ProductNotFoundException;
 import com.vintagemarket.backend.exception.UserNotFoundException;
 import com.vintagemarket.backend.repository.AuthRepository;
 import com.vintagemarket.backend.repository.ProductImageRepository;
 import com.vintagemarket.backend.repository.ProductRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,8 +47,8 @@ public class ProductService {
         );
     }
 
-    public ProductResponse create(ProductRequest request) {
-        User seller = authRepository.findById(request.getSellerId())
+    public ProductResponse create(ProductRequest request, Long userId) {
+        User seller = authRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 판매자입니다."));
 
         Product product = Product.builder()
@@ -66,8 +65,8 @@ public class ProductService {
         return toResponse(saved);
     }
 
-    public List<ProductResponse> getAll(String category, String keyword) {
-        List<Product> products = productRepository.search(category, keyword);
+    public List<ProductResponse> getAll(String category, String keyword, boolean onSaleOnly) {
+        List<Product> products = productRepository.search(category, keyword, onSaleOnly);
 
         return products.stream()
                 .map(this::toResponse)
@@ -81,18 +80,26 @@ public class ProductService {
     }
 
     @Transactional
-    public void delete(long id) {
+    public void delete(long id, Long requestUserId) {
         Product product = productRepository.findById(id)
                         .orElseThrow(() -> new ProductNotFoundException("이미 삭제된 상품입니다."));
+
+        if (!product.getSeller().getId().equals(requestUserId)) {
+            throw new ForbiddenException("본인이 등록한 상품만 삭제할 수 있습니다.");
+        }
 
         productImageRepository.deleteByProduct(product);
         productRepository.deleteById(id);
     }
 
     @Transactional
-    public ProductResponse update(Long id, ProductUpdateRequest request, List<MultipartFile> newImages) {
+    public ProductResponse update(Long id, ProductUpdateRequest request, List<MultipartFile> newImages, Long requestUserId) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("이미 삭제된 게시글입니다."));
+
+        if (!product.getSeller().getId().equals(requestUserId)) {
+            throw new ForbiddenException("본인이 등록한 상품만 수정할 수 있습니다.");
+        }
 
         product.update(request.getTitle(), request.getPrice(), request.getDescription(), request.getCategory());
 
@@ -114,9 +121,13 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponse updateStatus(Long id, String status) {
+    public ProductResponse updateStatus(Long id, String status, Long requestUserId) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("이미 삭제된 게시글입니다."));
+
+        if (!product.getSeller().getId().equals(requestUserId)) {
+            throw new ForbiddenException("본인이 등록한 상품만 상태를 변경할 수 있습니다.");
+        }
 
         Product.Status newStatus;
         try {
