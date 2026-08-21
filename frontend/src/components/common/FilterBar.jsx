@@ -8,7 +8,7 @@ export default function FilterBar() {
   return (
     <div className="filter-bar">
         <label className="filter-checkbox">
-            <input 
+            <input
                 type="checkbox" 
                 checked={excludeSold}
                 onChange={(e) => setExcludeSold(e.target.checked)}
