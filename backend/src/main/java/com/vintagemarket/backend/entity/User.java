@@ -1,5 +1,6 @@
 package com.vintagemarket.backend.entity;
 
+import com.vintagemarket.backend.dto.UserResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -41,5 +42,11 @@ public class User {
 
     public enum Role {
         INDIVIDUAL, STORE
+    }
+
+    public void updateProfile(String email, String nickname, String phone) {
+        this.email = email;
+        this.nickname = nickname;
+        this.phone = phone;
     }
 }

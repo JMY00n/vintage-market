@@ -49,9 +49,10 @@ public class ProductController {
     public ResponseEntity<List<ProductResponse>> getAll(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String keyword,
-            @RequestParam(defaultValue = "false") boolean onSaleOnly
+            @RequestParam(defaultValue = "false") boolean onSaleOnly,
+            @RequestParam(required = false) Long sellerId
     ) {
-        return ResponseEntity.ok(service.getAll(category, keyword, onSaleOnly));
+        return ResponseEntity.ok(service.getAll(category, keyword, onSaleOnly, sellerId));
     }
 
     @GetMapping("/{id}")

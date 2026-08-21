@@ -18,9 +18,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "(:category IS NULL OR :category = '전체' OR p.category = :category) AND " +
             "(:keyword IS NULL OR :keyword = '' OR p.title LIKE CONCAT('%', :keyword, '%')) AND " +
             "(:onSaleOnly = false OR p.status = 'ON_SALE') " +
+            "(:sellerId IS NULL OR p.seller.id = :sellerId) " +
             "ORDER BY p.id DESC")
     List<Product> search(@Param("category") String category,
                          @Param("keyword") String keyword,
-                         @Param("onSaleOnly") boolean onSaleOnly);
+                         @Param("onSaleOnly") boolean onSaleOnly,
+                         @Param("sellerId") Long sellerId
+                    );
 
 }

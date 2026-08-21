@@ -65,8 +65,8 @@ public class ProductService {
         return toResponse(saved);
     }
 
-    public List<ProductResponse> getAll(String category, String keyword, boolean onSaleOnly) {
-        List<Product> products = productRepository.search(category, keyword, onSaleOnly);
+    public List<ProductResponse> getAll(String category, String keyword, boolean onSaleOnly, Long sellerId) {
+        List<Product> products = productRepository.search(category, keyword, onSaleOnly, sellerId);
 
         return products.stream()
                 .map(this::toResponse)
